@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const connection = require('./banco');
 
+// Rota de teste
+router.get('/', (req, res) => {
+  res.send('Servidor funcionando!');
+});
+
 // Rota de cadastro
 router.post('/enviar', (req, res) => {
   const { nome, email, senha } = req.body;
