@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const rotas = require('./rotas');
+const rotas = require('./rotas.js');
 
 const app = express();
 

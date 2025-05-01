@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('./banco');
+const connection = require('./banco.js');
 
 // Rota de teste
 router.get('/', (req, res) => {
