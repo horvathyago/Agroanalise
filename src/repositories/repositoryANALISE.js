@@ -2,7 +2,7 @@ import con from "../database/banco.js";
 
 async function Listar() {
     let sql = "SELECT * FROM Usuarios";
-    const [usuarios] = await con.execute(sql);
+    const [usuarios] = await (con.connection.execute(sql));
     return usuarios;
 }
 
