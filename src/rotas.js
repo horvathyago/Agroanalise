@@ -3,7 +3,7 @@ const router = express.Router();
 const connection = require('./banco.js');
 
 // Rota de teste
-router.get('/', (req, res) => {
+router.get('/teste', (req, res) => {
   res.send('Servidor funcionando!');
 });
 
