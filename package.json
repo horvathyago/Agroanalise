@@ -1,4 +1,13 @@
 {
+
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "vercel-sapper"
+    }
+  ],
+
+
   "name": "analise.solo",
   "version": "1.0.0",
   "main": "index.js",
