@@ -24,4 +24,46 @@ async function Excluir(id_usuario) {
     return { mensagem: "usuário excluído" };
 }
 
-export default { Listar, Inserir, Editar, Excluir };
+
+
+// Operações para Fazenda
+async function criarPropiedade(nome, endereco, cidade, estado, telefone, id_usuario) {
+    let sql = "INSERT INTO Propiedades(nome, endereco, cidade, estado, telefone, id_usuario) VALUES (?, ?, ?, ?, ?, ?)";
+    const [result] = await (con.connection.execute(sql, [nome, endereco, cidade, estado, telefone, id_usuario]));
+    return result.insertId;
+}
+
+async function listarPropiedade() {
+    let sql = "SELECT * FROM Propiedades";
+    const [fazendas] = await (con.connection.execute(sql));
+    return fazendas;
+}
+
+async function buscarPropiedade(id_propriedade) {
+    let sql = "SELECT * FROM Propiedades WHERE id_propriedade = ?";
+    const [fazenda] = await (con.connection.execute(sql, [id_propriedade]));
+    return fazenda[0];
+}
+async function atualizarPropiedade(id_propriedade, nome, endereco, cidade, estado, telefone) {
+    let sql = "UPDATE Propiedades SET nome = ?, endereco = ?, cidade = ?, estado = ?, telefone = ? WHERE id_propriedade = ?";
+    const [result] = await (con.connection.execute(sql, [nome, endereco, cidade, estado, telefone, id_propriedade]));
+    return result.affectedRows;
+}
+
+async function deletarPropiedade(id_propriedade) {
+    let sql = "DELETE FROM Propiedades WHERE id_propriedade = ?";
+    const [result] = await (con.connection.execute(sql, [id_propriedade]));
+    return result.affectedRows;
+}
+
+export default { 
+    criarPropiedade,
+    listarPropiedade,
+    buscarPropiedade,
+    atualizarPropiedade,
+    deletarPropiedade,
+    Listar,
+    Inserir,
+    Editar,
+    Excluir
+};

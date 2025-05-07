@@ -19,5 +19,36 @@ async function Excluir(id_usuario) {
     const usuarios = await repostuario.Excluir(id_usuario);
     return usuarios;
 }
+// Serviços para Fazenda
+async function criarPropiedade(nome, endereco, cidade, estado, telefone, id_usuario) {
+    return await repostuario.criarPropiedade(nome, endereco, cidade, estado, telefone, id_usuario); 
+}
 
-export default { Listar, Inserir, Editar, Excluir };
+async function listarPropiedade() {
+    return await repostuario.listarPropiedade();
+}
+
+async function buscarPropiedade(id_propriedade) {
+    return await repostuario.buscarPropiedade(id_propriedade);
+}
+
+async function atualizarPropriedade(id_propriedade, nome, endereco, cidade, estado, telefone) {
+    return await repostuario.atualizarPropiedade(id_propriedade, nome, endereco, cidade, estado, telefone);
+}
+
+async function deletarPropiedade(id_propriedade) {
+    return await repostuario.deletarPropiedade(id_propriedade);
+}
+
+
+export default { 
+    criarPropiedade,
+    listarPropiedade,
+    buscarPropiedade,
+    atualizarPropriedade,
+    deletarPropiedade,
+    Listar,
+    Inserir,
+    Editar,
+    Excluir
+};
