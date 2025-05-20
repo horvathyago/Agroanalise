@@ -1,14 +1,18 @@
 import repostuario from "../repositories/repositoryANALISE.js";
+import bcrypt from 'bcrypt';
 
 async function Listar() {
     const usuarios = await repostuario.Listar();
     return usuarios;
 }
 
-async function Inserir(nome, email, senha) {
-    const usuarios = await repostuario.Inserir(nome, email, senha);
-    return usuarios;
+async function Inserir(nome, email, senha){
+    var n = nome.toUpperCase()
+    const password = await bcrypt.hash(senha, 10)   
+    const user = await repostuario.Inserir(n, email, password);
+    return user;
 }
+
 
 async function Editar(id_usuario, nome, email, senha) {
     const usuarios = await repostuario.Editar(id_usuario, nome, email, senha);
@@ -40,6 +44,25 @@ async function deletarPropiedade(id_propriedade) {
     return await repostuario.deletarPropiedade(id_propriedade);
 }
 
+//login
+
+async function Login(email, senha){   
+    const user = await repostuario.ListarByEmail(email);  
+    if(user.length == 0)
+        return []
+    else{
+        if(await  bcrypt.compare(senha, user.senha)){
+            delete user.senha
+            user.token = "abcd1234"
+            return user;
+        }else{
+            return []
+        }
+    }
+        
+               
+}
+
 
 export default { 
     criarPropiedade,
@@ -50,5 +73,6 @@ export default {
     Listar,
     Inserir,
     Editar,
-    Excluir
+    Excluir,
+    Login
 };

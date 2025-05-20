@@ -6,9 +6,9 @@ async function Listar(req, res) {
 }
 
 async function Inserir(req, res) {
-    const { nome, email, senha } = req.body;
-    const usuario = await servicesANALISE.Inserir(nome, email, senha);
-    res.status(201).json({ mensagem: "success" });
+    const {nome, email, senha} = req.body;     
+    const user = await servicesANALISE.Inserir(nome, email, senha) 
+    res.status(201).json({"mensagem":"sucesso"}) 
 }
 
 async function Editar(req, res) {
@@ -57,6 +57,18 @@ async function deletarPropiedade(req, res) {
     res.status(200).json(propriedades);
 }
 
+async function Login(req, res){
+    const {email, senha} = req.body;
+    const user = await servicesANALISE.Login(email, senha)
+    if(user.length == 0)
+        res.status(401).json({error: "Email ou senha inválido"})
+    else
+        res.status(200).json(user)
+
+
+          
+}
+
 
 export default {Listar, 
     Inserir, 
@@ -65,5 +77,7 @@ export default {Listar,
     listarPropiedade,
     criarPropiedade,
     atualizarPropriedade,
-    deletarPropiedade
+    deletarPropiedade,
+    Login
+   
 }

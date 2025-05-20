@@ -6,11 +6,13 @@ async function Listar() {
     return usuarios;
 }
 
-async function Inserir(nome, email, senha) {
-    let sql = "INSERT INTO Usuarios(nome, email, senha) VALUES (?, ?, ?)";
-    const [usuarios] = await (con.connection.execute(sql, [nome, email, senha]));
-    return usuarios;
+async function Inserir(nome, email, senha){
+    let sql = "INSERT INTO Usuarios(nome, email, senha) VALUES (?,?,?)";
+    const [user] = await (con.connection).query(sql, [nome, email, senha]);
+    return user;
 }
+
+
 
 async function Editar(id_usuario, nome, email, senha) {
     let sql = "UPDATE Usuarios SET nome=?, email=?, senha=? WHERE id_usuario=?";
@@ -56,6 +58,14 @@ async function deletarPropiedade(id_propriedade) {
     return result.affectedRows;
 }
 
+async function ListarByEmail(email){
+    let sql = "SELECT * FROM Usuarios WHERE EMAIL = ?";
+    const [user] = await (con.connection).execute(sql, [email]);
+    if(user.length == 0)
+        return []
+    else
+        return user[0];}
+
 export default { 
     criarPropiedade,
     listarPropiedade,
@@ -65,5 +75,7 @@ export default {
     Listar,
     Inserir,
     Editar,
-    Excluir
+    Excluir,
+    ListarByEmail
+ 
 };
