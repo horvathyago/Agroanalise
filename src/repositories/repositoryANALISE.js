@@ -15,8 +15,8 @@ async function Inserir(nome, email, senha){
 
 
 async function Editar(id_usuario, nome, email, senha) {
-    let sql = "UPDATE Usuarios SET nome=?, email=?, senha=? WHERE id_usuario=?";
-    const [usuarios] = await (con.connection.execute(sql, [nome, email, senha, id_usuario]));
+    const sql = "UPDATE Usuarios SET nome=?, email=?, senha=? WHERE id_usuario=?";
+    await (con.connection.execute(sql, [nome, email, senha || null, id_usuario])); // Senha pode ser null
     return { id_usuario };
 }
 
@@ -30,30 +30,30 @@ async function Excluir(id_usuario) {
 
 // Operações para Fazenda
 async function criarPropiedade(nome, endereco, cidade, estado, telefone, id_usuario) {
-    let sql = "INSERT INTO Propiedades(nome, endereco, cidade, estado, telefone, id_usuario) VALUES (?, ?, ?, ?, ?, ?)";
+    let sql = "INSERT INTO Propriedades(nome, endereco, cidade, estado, telefone, id_usuario) VALUES (?, ?, ?, ?, ?, ?)";
     const [result] = await (con.connection.execute(sql, [nome, endereco, cidade, estado, telefone, id_usuario]));
     return result.insertId;
 }
 
 async function listarPropiedade() {
-    let sql = "SELECT * FROM Propiedades";
+    let sql = "SELECT * FROM Propriedades";
     const [fazendas] = await (con.connection.execute(sql));
     return fazendas;
 }
 
 async function buscarPropiedade(id_propriedade) {
-    let sql = "SELECT * FROM Propiedades WHERE id_propriedade = ?";
+    let sql = "SELECT * FROM Propriedades WHERE id_propriedade = ?";
     const [fazenda] = await (con.connection.execute(sql, [id_propriedade]));
     return fazenda[0];
 }
 async function atualizarPropiedade(id_propriedade, nome, endereco, cidade, estado, telefone) {
-    let sql = "UPDATE Propiedades SET nome = ?, endereco = ?, cidade = ?, estado = ?, telefone = ? WHERE id_propriedade = ?";
+    let sql = "UPDATE Propriedades SET nome = ?, endereco = ?, cidade = ?, estado = ?, telefone = ? WHERE id_propriedade = ?";
     const [result] = await (con.connection.execute(sql, [nome, endereco, cidade, estado, telefone, id_propriedade]));
     return result.affectedRows;
 }
 
 async function deletarPropiedade(id_propriedade) {
-    let sql = "DELETE FROM Propiedades WHERE id_propriedade = ?";
+    let sql = "DELETE FROM Propriedades WHERE id_propriedade = ?";
     const [result] = await (con.connection.execute(sql, [id_propriedade]));
     return result.affectedRows;
 }

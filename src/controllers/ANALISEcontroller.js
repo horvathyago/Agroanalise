@@ -14,7 +14,7 @@ async function Inserir(req, res) {
 async function Editar(req, res) {
     const id_usuario = req.params.id_usuario;
     const { nome, email, senha } = req.body;
-    const usuario = await servicesANALISE.Editar(id_usuario, nome, email, senha);
+    const usuario = await servicesANALISE.Editar(id_usuario, nome, email, senha); // Corrigido para "Editar"
     res.status(200).json(usuario);
 }
 

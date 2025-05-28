@@ -15,7 +15,8 @@ async function Inserir(nome, email, senha){
 
 
 async function Editar(id_usuario, nome, email, senha) {
-    const usuarios = await repostuario.Editar(id_usuario, nome, email, senha);
+    const senhaHash = senha ? await bcrypt.hash(senha, 10) : null; // Hash ou null se não houver senha
+    const usuarios = await repostuario.Editar(id_usuario, nome, email, senhaHash);
     return usuarios;
 }
 
