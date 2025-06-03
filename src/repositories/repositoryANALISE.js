@@ -6,17 +6,17 @@ async function Listar() {
     return usuarios;
 }
 
-async function Inserir(nome, email, senha){
-    let sql = "INSERT INTO Usuarios(nome, email, senha) VALUES (?,?,?)";
-    const [user] = await (con.connection).query(sql, [nome, email, senha]);
+async function Inserir(nome, email, senha, cpf){
+    let sql = "INSERT INTO Usuarios(nome, email, senha, cpf) VALUES (?,?,?,?)";
+    const [user] = await (con.connection).query(sql, [nome, email, senha, cpf]);
     return user;
 }
 
 
 
-async function Editar(id_usuario, nome, email, senha) {
-    const sql = "UPDATE Usuarios SET nome=?, email=?, senha=? WHERE id_usuario=?";
-    await (con.connection.execute(sql, [nome, email, senha || null, id_usuario])); // Senha pode ser null
+async function Editar(id_usuario, nome, email) { // Removido senha e cpf
+    const sql = "UPDATE Usuarios SET nome=?, email=? WHERE id_usuario=?";
+    await con.connection.execute(sql, [nome, email, id_usuario]);
     return { id_usuario };
 }
 
@@ -66,6 +66,21 @@ async function ListarByEmail(email){
     else
         return user[0];}
 
+//recuperar senha
+
+async function RedefinirSenhaPorCpf(cpf, novaSenha) {
+    // Verifica se o CPF existe e atualiza a senha em uma única operação
+    let sql = "UPDATE Usuarios SET senha = ? WHERE cpf = ?";
+    const [result] = await con.connection.execute(sql, [novaSenha, cpf]);
+    
+    if (result.affectedRows === 0) {
+        throw new Error("CPF não encontrado");
+    }
+    
+    return { mensagem: "Senha redefinida com sucesso" };
+}
+
+
 export default { 
     criarPropiedade,
     listarPropiedade,
@@ -76,6 +91,7 @@ export default {
     Inserir,
     Editar,
     Excluir,
-    ListarByEmail
+    ListarByEmail,
+    RedefinirSenhaPorCpf
  
 };

@@ -24,4 +24,7 @@ router.delete("/propriedades/:id_propriedade", ANALISEcontroller.deletarPropieda
 // Rota de Login
 router.post("/login", ANALISEcontroller.Login)
 
+//rota de redefinir senha
+router.post("/recuperarsenha", ANALISEcontroller.RedefinirSenha);
+
 export default router;

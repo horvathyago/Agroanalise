@@ -6,15 +6,15 @@ async function Listar(req, res) {
 }
 
 async function Inserir(req, res) {
-    const {nome, email, senha} = req.body;     
-    const user = await servicesANALISE.Inserir(nome, email, senha) 
+    const {nome, email, senha, cpf} = req.body;     
+    const user = await servicesANALISE.Inserir(nome, email, senha, cpf) 
     res.status(201).json({"mensagem":"sucesso"}) 
 }
 
 async function Editar(req, res) {
     const id_usuario = req.params.id_usuario;
-    const { nome, email, senha } = req.body;
-    const usuario = await servicesANALISE.Editar(id_usuario, nome, email, senha); // Corrigido para "Editar"
+    const { nome, email } = req.body; // Removido senha e cpf
+    const usuario = await servicesANALISE.Editar(id_usuario, nome, email);
     res.status(200).json(usuario);
 }
 
@@ -69,6 +69,23 @@ async function Login(req, res){
           
 }
 
+//recuperar senha
+
+async function RedefinirSenha(req, res) {
+    try {
+        const { cpf, novaSenha } = req.body;
+        
+        if (!cpf || !novaSenha) {
+            return res.status(400).json({ erro: "CPF e nova senha são obrigatórios" });
+        }
+        
+        const resultado = await servicesANALISE.RedefinirSenhaComCpf(cpf, novaSenha);
+        res.status(200).json(resultado);
+    } catch (error) {
+        res.status(400).json({ erro: error.message });
+    }
+}
+
 
 export default {Listar, 
     Inserir, 
@@ -78,6 +95,7 @@ export default {Listar,
     criarPropiedade,
     atualizarPropriedade,
     deletarPropiedade,
-    Login
+    Login,
+    RedefinirSenha
    
 }

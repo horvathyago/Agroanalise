@@ -6,17 +6,17 @@ async function Listar() {
     return usuarios;
 }
 
-async function Inserir(nome, email, senha){
+async function Inserir(nome, email, senha, cpf){
     var n = nome.toUpperCase()
     const password = await bcrypt.hash(senha, 10)   
-    const user = await repostuario.Inserir(n, email, password);
+    const user = await repostuario.Inserir(n, email, password, cpf);
     return user;
 }
 
 
-async function Editar(id_usuario, nome, email, senha) {
-    const senhaHash = senha ? await bcrypt.hash(senha, 10) : null; // Hash ou null se não houver senha
-    const usuarios = await repostuario.Editar(id_usuario, nome, email, senhaHash);
+async function Editar(id_usuario, nome, email) { // Removido senha e cpf
+    const n = nome.toUpperCase();
+    const usuarios = await repostuario.Editar(id_usuario, n, email);
     return usuarios;
 }
 
@@ -64,6 +64,25 @@ async function Login(email, senha){
                
 }
 
+//recuperar senha
+
+async function RedefinirSenhaComCpf(cpf, novaSenha) {
+    // Validações básicas
+    if (!cpf || !novaSenha) {
+        throw new Error("CPF e nova senha são obrigatórios");
+    }
+    
+    if (novaSenha.length < 6) {
+        throw new Error("A senha deve ter pelo menos 6 caracteres");
+    }
+    
+    // Hash da nova senha
+    const password = await bcrypt.hash(novaSenha, 10);
+    
+    // Chama o repository para atualizar
+    return await repostuario.RedefinirSenhaPorCpf(cpf, password);
+}
+
 
 export default { 
     criarPropiedade,
@@ -75,5 +94,6 @@ export default {
     Inserir,
     Editar,
     Excluir,
-    Login
+    Login,
+    RedefinirSenhaComCpf
 };
