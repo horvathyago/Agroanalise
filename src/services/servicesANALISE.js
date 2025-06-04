@@ -8,8 +8,11 @@ async function Listar() {
 
 async function Inserir(nome, email, senha, cpf){
     var n = nome.toUpperCase()
+    cpf = cpf.replace(/\D/g, ''); // Remove qualquer caractere que não seja número
+    var cpfFormatado = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+
     const password = await bcrypt.hash(senha, 10)   
-    const user = await repostuario.Inserir(n, email, password, cpf);
+    const user = await repostuario.Inserir(n, email, password, cpfFormatado);
     return user;
 }
 

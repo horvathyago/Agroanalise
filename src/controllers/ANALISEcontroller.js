@@ -7,8 +7,13 @@ async function Listar(req, res) {
 
 async function Inserir(req, res) {
     const {nome, email, senha, cpf} = req.body;     
-    const user = await servicesANALISE.Inserir(nome, email, senha, cpf) 
-    res.status(201).json({"mensagem":"sucesso"}) 
+    if(senha.length < 8){
+        res.status(405).json("senha invalida")
+    }
+    else{
+        const user = await servicesANALISE.Inserir(nome, email, senha, cpf)
+        res.status(201).json({"mensagem":"sucesso"}) 
+    }
 }
 
 async function Editar(req, res) {
